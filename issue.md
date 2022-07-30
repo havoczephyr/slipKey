@@ -36,9 +36,9 @@ the function `ProcessSessions()` will iterate through every folder in the workin
 
 `main()` will then proceed to iterate through `sessionInfos` and perform the following actions. 
 
-1. run the function `BuildMaster()`, which will open the `merged.tsv` file in the seelected folder and store & return values of tier `Keypress` into an array of type `Keypress{}`.
+1. run the function `BuildMaster()`, which will open the `merged.tsv` file in the seelected folder and store & return values of tier `Keypress` into an array of type `Item{}`.
 
-2. run the function `ComparePostProcessed()` will take the returned struct-array and compare its values line-by-line with the stored values of tier `Keypress` inside of `curated_postprocessed.tsv`. if a value is missing, the value is added in the struct Array `KeypressMissing[]` of type `Keypress{}`. the return will be `KeypressMissing[]`. additionally all values from `curated-postprocessed.tsv` with any missing values from `Keypresses` will be generated in a new file: `postprocessed-fixed.tsv`.
+2. run the function `ComparePostProcessed()` will take the returned struct-array and compare its values line-by-line with the stored values of tier `Keypress` inside of `curated_postprocessed.tsv`. if a value is missing, the value is added in the struct Array `KeypressMissing[]` of type `Item{}`. the return will be `KeypressMissing[]`. additionally all values from `curated-postprocessed.tsv` with any missing values from `Keypresses` will be generated in a new file: `postprocessed-fixed.tsv`.
 
 3. Once `ComparePostProcessed()` is completed, next to run `GenerateSessionReport()` which will export a report `keypress_report.md` containing all missing values for that session, the delta between the missing keypress and the last existing keypress and the percentage of missing keypresses.
 
