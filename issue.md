@@ -30,6 +30,7 @@ type SessionInfo struct {
 	CuratedPostProcessedPath string
 }
 ```
+CLI invocation can be ran without arguments which **only** generate a report of missing keypresses of all session folders inside of the working directory, and posit the reports into a timestamped folder `slipKey_reports_MMDDYYHHMMSS`. If you put in the CLI argument `-f` (example: `slipKey -f`), you will also generate `postprocessed-fixed.tsv, in each session folder. Reports will also reflect this.
 
 the function `ProcessSessions()` will iterate through every folder in the working directory with the prefix of `session-` that also contains a `merged.tsv` and a `curated-postprocessed.tsv`. it will return a struct array of `sessionInfos` of type `SessionInfo{}`
 
