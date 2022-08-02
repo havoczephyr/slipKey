@@ -38,7 +38,28 @@ the function `ProcessSessions()` will iterate through every folder in the workin
 
 1. run the function `BuildMaster()`, which will open the `merged.tsv` file in the seelected folder and store & return values of tier `Keypress` into an array of type `Item{}`.
 
-2. run the function `ComparePostProcessed()` will take the returned struct-array and compare its values line-by-line with the stored values of tier `Keypress` inside of `curated_postprocessed.tsv`. if a value is missing, the value is added in the struct Array `KeypressMissing[]` of type `Item{}`. the return will be `KeypressMissing[]`. additionally all values from `curated-postprocessed.tsv` with any missing values from `Keypresses` will be generated in a new file: `postprocessed-fixed.tsv`.
+<!-- 2. run the function `ComparePostProcessed()` will take the returned struct-array and compare its values line-by-line with the stored values of tier `Keypress` inside of `curated_postprocessed.tsv`. if a value is missing, the value is added in the struct Array `KeypressMissing[]` of type `Item{}`. the return will be `KeypressMissing[]`. additionally all values from `curated-postprocessed.tsv` with any missing values from `Keypresses` will be generated in a new file: `postprocessed-fixed.tsv`. -->
+
+2. run the function `ComparePostProcessed()` which will take the post keypress array and the merged keypress array and iterate through them with the goal of collecting:
+   - the keypresses that were missed
+   - the **Interrupt size** which is the delta(Δ) from when the last successful keypress went through, and the first keypress in a cluster failed.
+   - the **Gap size** which describes the number of keypresses that failed to succeed.
+   - and the **Gap length** which describes the delta(Δ) of time from when the Interrupt starts and the next successful keypress begins.
+ - All of which will be used to generate the metrics used in the exported report. We can use the following struct to reflect this information.
+```go
+type KeypressGap struct {
+	// Start             *Item
+	// End               *Item
+	MissingKeypresses []Item
+	TriggerTime       float64
+	Duration          float64
+}
+
+func (g *KeypressGap) Size() int {
+	return len(g.MissingKeypresses)
+}
+```
+ one KeypressGap would contain a plural of missing Keypresses and from there, using the TriggerTime + the TEnd of the last missing
 
 3. Once `ComparePostProcessed()` is completed, next to run `GenerateSessionReport()` which will export a report `keypress_report.md` containing all missing values for that session, the delta between the missing keypress and the last existing keypress and the percentage of missing keypresses.
 

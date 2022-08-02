@@ -10,9 +10,9 @@
 - **Smallest interrupt threshold**: .093 ms
 
 
-### Example Scatter Plot here:
-- y axis gap size
-- x axis interrupt delta
+### Example Line Graph
+- *horizontal value*: Number of missing keypresses
+- *vertical value*: keypress interrupt(in ms)
 
 
-<img src="https://chartio.com/images/tutorials/charts/scatter-plots/scatter-plot-example-1.png">
+<img src="https://images.edrawmax.com/images/knowledge/line-graph-1-what-is.jpg" style="max-width:50%">
