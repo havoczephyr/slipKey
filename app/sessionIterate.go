@@ -1,7 +1,17 @@
 package app
 
-func SessionIterate(arr []SessionInfo) {
+func SessionIterate(arr []SessionInfo, boolean bool) error {
 	for _, session := range arr {
-		BuildArrays(session.MergedTsvPath, session.CuratedPostProcessedPath)
+		mergedArr, curatedPostArr, err := buildArrays(session.MergedTsvPath,
+			session.CuratedPostProcessedPath)
+		if err != nil {
+			return err
+			break
+		}
+		generateSessionReport(comparePostProcessed(mergedArr, curatedPostArr))
+		if boolean == true {
+			generatePostProcessFixed(mergedArr, curatedPostArr)
+		}
 	}
+	return nil
 }

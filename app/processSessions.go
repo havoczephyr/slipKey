@@ -17,7 +17,7 @@ func ProcessSessions(dir string) []SessionInfo {
 		isSession := folder.IsDir() && strings.HasPrefix(folder.Name(), "session-")
 		if isSession {
 			sessionPath := filepath.Join(dir, folder.Name())
-			mergedPath, curatedPostPath, err := VitalCheck(sessionPath)
+			mergedPath, curatedPostPath, err := vitalCheck(sessionPath)
 			if err != nil {
 				fmt.Printf("vital check failed -%v", err)
 			} else {

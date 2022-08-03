@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-func VitalCheck(dir string) (string, string, error) {
+func vitalCheck(dir string) (string, string, error) {
 	const MERGED_NAME string = "merged.tsv"
 	const CUR_POST_NAME string = "curated-postprocessed.tsv"
 

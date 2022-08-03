@@ -1,13 +1,13 @@
 package app
 
-type KeypressGap struct {
+type keypressGap struct {
 	// Start             *Item
 	// End               *Item
-	MissingKeypresses []Item
+	MissingKeypresses []item
 	TriggerTime       float64
 	Duration          float64
 }
 
-func (g *KeypressGap) Size() int {
+func (g *keypressGap) Size() int {
 	return len(g.MissingKeypresses)
 }

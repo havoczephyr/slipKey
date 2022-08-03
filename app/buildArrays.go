@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func BuildArrays(mergedPath string, postPath string) ([]Item, []Item, error) {
-	keyPressMergedItems, err := readItems(mergedPath)
+func buildArrays(mergedPath string, postPath string) ([]item, []item, error) {
+	MergedItems, err := readItems(mergedPath)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -17,10 +17,10 @@ func BuildArrays(mergedPath string, postPath string) ([]Item, []Item, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	return keyPressMergedItems, curatedPostProcessedItems, nil
+	return MergedItems, curatedPostProcessedItems, nil
 }
 
-func readItems(path string) ([]Item, error) {
+func readItems(path string) ([]item, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		readError := fmt.Errorf("error reading file %s: %w", path, err)
@@ -30,7 +30,7 @@ func readItems(path string) ([]Item, error) {
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
-	itemsArray := make([]Item, 0)
+	itemsArray := make([]item, 0)
 
 	for scanner.Scan() {
 		lineData := strings.Split(scanner.Text(), "\t")
@@ -45,7 +45,7 @@ func readItems(path string) ([]Item, error) {
 		tier := lineData[2]
 		content := lineData[3]
 
-		lineItem := Item{tBegin, tEnd, tier, content}
+		lineItem := item{tBegin, tEnd, tier, content}
 		itemsArray = append(itemsArray, lineItem)
 	}
 	return itemsArray, nil
