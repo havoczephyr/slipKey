@@ -11,7 +11,7 @@ func compareArr(mergedArr, postArr []item) []keypressGap {
 	for val, keypress := range postKeypresses {
 
 		mergedStart := mergedIndex
-		for keypress.Content != mergedKeypresses[mergedIndex].Content {
+		if keypress.Content != mergedKeypresses[mergedIndex].Content {
 			fmt.Printf("compareArr Debug: keypress comparator %s, %s", keypress.Content, mergedKeypresses[mergedIndex].Content)
 			mergedIndex++
 		}

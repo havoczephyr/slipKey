@@ -40,8 +40,7 @@ func readItems(path string) ([]item, error) {
 	}
 
 	for _, column := range tsvData {
-		fmt.Printf(column[0])
-		if column[0] == "tbegin" {
+		if column[0] == "tBegin" {
 			continue
 		} else {
 			tBegin, err := strconv.ParseFloat(column[0], 64)
