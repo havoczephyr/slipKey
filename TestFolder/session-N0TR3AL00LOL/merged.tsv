@@ -1,4 +1,4 @@
-tbegin  tEnd    Tier    Content
+tBegin  tEnd    Tier    Content
 0   2.0 AudioEvents1    Speech
 2.8 15.0   AudioEvents1    Speech
 3.000  14.300  SpeechTranscript    I've tried to be fair to you creatures. Now my patience has reached its end! Tell me or i'll...[U1][Speaker:Farquad]
@@ -54,4 +54,3 @@ tbegin  tEnd    Tier    Content
 21.290  21.390  Keypress    W
 21.5  25.5  AudioEvents1    Speech
 21.538  25.202  SpeechTranscript    No, No not the buttons. Not my gumdrop Buttons [U2][Speaker:Gingy]
-

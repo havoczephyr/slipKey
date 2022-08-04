@@ -1,4 +1,4 @@
-tbegin  tEnd    Tier    Content
+tBegin  tEnd    Tier    Content
 0   2.0 AudioEvents1    Speech
 2.8 15.0   AudioEvents1    Speech
 21.5    25.5  AudioEvents1    Speech

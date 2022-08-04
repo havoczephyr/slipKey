@@ -7,7 +7,7 @@ import (
 
 func main() {
 	var returnError error
-	fixBool, wd, err1 := (app.Boot())
+	fixBool, wd, err1 := app.Boot()
 	if err1 != nil {
 		returnError = fmt.Errorf("failed to boot -%w", err1)
 		panic(returnError)

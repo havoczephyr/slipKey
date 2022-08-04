@@ -6,12 +6,11 @@ func SessionIterate(arr []SessionInfo, boolean bool) error {
 			session.CuratedPostProcessedPath)
 		if err != nil {
 			return err
-			break
 		}
-		generateSessionReport(comparePostProcessed(mergedArr, curatedPostArr))
-		if boolean == true {
-			generatePostProcessFixed(mergedArr, curatedPostArr)
-		}
+		generateSessionReport(compareArr(mergedArr, curatedPostArr))
+		// if boolean {
+		// 	generatePostProcessFixed(mergedArr, curatedPostArr)
+		// }
 	}
 	return nil
 }

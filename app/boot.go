@@ -11,8 +11,10 @@ func Boot() (bool, string, error) {
 	if err != nil {
 		return fixBool, wd, err
 	}
-	if os.Args[1] == "-f" {
-		fixBool = true
+	if len(os.Args) > 1 {
+		if os.Args[1] == "-f" {
+			fixBool = true
+		}
 	}
 	return fixBool, wd, nil
 }
