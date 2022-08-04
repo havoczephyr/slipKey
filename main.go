@@ -2,21 +2,22 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"slipKey/app"
 )
 
 func main() {
-	var returnError error
+	// var returnError error
 	fixBool, wd, err1 := app.Boot()
 	if err1 != nil {
-		returnError = fmt.Errorf("failed to boot -%w", err1)
-		panic(returnError)
+		fmt.Printf("failed to boot -%v", err1)
+		os.Exit(1)
 	}
 	sessionInfos := app.ProcessSessions(wd)
 	err2 := app.SessionIterate(sessionInfos, fixBool)
 	if err2 != nil {
-		returnError = fmt.Errorf("failed to iterate -%w", err2)
-		panic(returnError)
+		fmt.Printf("failed to iterate -%v", err2)
+		os.Exit(1)
 	}
 
 }

@@ -1,11 +1,10 @@
 package app
 
 import (
-	"bufio"
+	"encoding/csv"
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 )
 
 func buildArrays(mergedPath string, postPath string) ([]item, []item, error) {
@@ -28,31 +27,40 @@ func readItems(path string) ([]item, error) {
 	}
 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
+	reader := csv.NewReader(file)
+	reader.Comma = '\t'
+	reader.FieldsPerRecord = -1
+
 	itemsArray := make([]item, 0)
 
-	for scanner.Scan() {
-		lineData := strings.Split(scanner.Text(), "\t")
-		if lineData[0] == "" {
-			fmt.Printf("%s", lineData[0])
+	tsvData, err := reader.ReadAll()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	for _, column := range tsvData {
+		fmt.Printf(column[0])
+		if column[0] == "tbegin" {
 			continue
 		} else {
-			tBegin, err := strconv.ParseFloat(lineData[0], 64)
+			tBegin, err := strconv.ParseFloat(column[0], 64)
 			if err != nil {
-				continue
+				fmt.Printf("parse failure -%v", err)
+				os.Exit(1)
 			}
-			tEnd, err := strconv.ParseFloat(lineData[1], 64)
+			tEnd, err := strconv.ParseFloat(column[0], 64)
 			if err != nil {
-				continue
+				fmt.Printf("parse failure -%v", err)
+				os.Exit(1)
 			}
-			tier := lineData[2]
-			content := lineData[3]
-			fmt.Printf("tBegin %f, tEnd %f, tier %s, content %s", tBegin, tEnd, tier, content)
+			tier := column[2]
+			content := column[3]
 			lineItem := item{tBegin, tEnd, tier, content}
 			itemsArray = append(itemsArray, lineItem)
 		}
 
 	}
+
 	return itemsArray, nil
 }
