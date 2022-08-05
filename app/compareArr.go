@@ -2,38 +2,65 @@ package app
 
 import "fmt"
 
-func compareArr(mergedArr, postArr []item) []keypressGap {
-	mergedKeypresses := getKeypresses(mergedArr)
-	postKeypresses := getKeypresses(postArr)
-	keypressGaps := make([]keypressGap, 0)
-	mergedIndex := 0
+func compareArr(mergedArr, postArr []item) ([]keypressGap, error) {
+	mergedKeypresses := filterKeypresses(mergedArr)
+	postKeypresses := filterKeypresses(postArr)
 
-	for val, keypress := range postKeypresses {
-
-		mergedStart := mergedIndex
-		if keypress.Content != mergedKeypresses[mergedIndex].Content {
-			fmt.Printf("compareArr Debug: keypress comparator %s, %s", keypress.Content, mergedKeypresses[mergedIndex].Content)
-			mergedIndex++
-		}
-		gapSize := mergedIndex - mergedStart
-		fmt.Printf("compareArr Debug: gapsize %d", gapSize)
-		gapKeypresses := make([]item, 0)
-		for i := 0; i < gapSize; i++ {
-			index := i + mergedStart
-			gapKeypresses = append(gapKeypresses, mergedKeypresses[index])
-		}
-		triggerTime := gapKeypresses[0].TBegin - mergedKeypresses[val-1].TBegin
-		duration := gapKeypresses[len(gapKeypresses)-1].TEnd - gapKeypresses[0].TBegin
-		gap := keypressGap{gapKeypresses, triggerTime, duration}
-		fmt.Printf("compareArr Debug: triggerTime %f, duration %f", triggerTime, duration)
-
-		keypressGaps = append(keypressGaps, gap)
-		mergedIndex++
+	postDict, err := buildPostMap(postKeypresses)
+	if err != nil {
+		return nil, err
 	}
-	return keypressGaps
+
+	var prefixKeypress *item = nil
+	keypressGaps := make([]keypressGap, 0)
+	i := 0
+	for i < len(mergedKeypresses) {
+		keypress := mergedKeypresses[i]
+
+		_, found := postDict[keypress.TBegin]
+		if !found {
+			missingKeypresses := make([]item, 0)
+			for !found {
+				missingKeypresses = append(missingKeypresses, keypress)
+				i++
+				keypress = mergedKeypresses[i]
+				_, found = postDict[keypress.TBegin]
+			}
+			suffixKeypress := &keypress
+			var triggerTime float64
+			if i == 0 {
+				triggerTime = missingKeypresses[0].TBegin
+			} else {
+				triggerTime = missingKeypresses[0].TBegin - prefixKeypress.TBegin
+			}
+			duration := missingKeypresses[len(missingKeypresses)-1].TBegin - missingKeypresses[0].TBegin
+			gap := keypressGap{
+				PrefixKeypress:    prefixKeypress,
+				SuffixKeypress:    suffixKeypress,
+				MissingKeypresses: missingKeypresses,
+				TriggerTime:       triggerTime,
+				Duration:          duration,
+			}
+			keypressGaps = append(keypressGaps, gap)
+		}
+		prefixKeypress = &keypress
+		i++
+	}
+	return keypressGaps, nil
+}
+func buildPostMap(postKeypresses []item) (map[float64]item, error) {
+	var dict map[float64]item = make(map[float64]item)
+	for _, keypress := range postKeypresses {
+		dict[keypress.TBegin] = keypress
+	}
+	if len(dict) != len(postKeypresses) {
+		err := fmt.Errorf("whoopsie doopsie, dict is incomplete")
+		return dict, err
+	}
+	return dict, nil
 }
 
-func getKeypresses(input []item) []item {
+func filterKeypresses(input []item) []item {
 	outputArray := make([]item, 0)
 	for _, i := range input {
 		if i.Tier == "Keypress" {

@@ -35,8 +35,7 @@ func readItems(path string) ([]item, error) {
 
 	tsvData, err := reader.ReadAll()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		panic(err)
 	}
 
 	for _, column := range tsvData {
