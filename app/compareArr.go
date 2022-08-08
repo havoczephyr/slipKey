@@ -2,13 +2,13 @@ package app
 
 import "fmt"
 
-func compareArr(mergedArr, postArr []item) ([]keypressGap, error) {
+func compareArr(mergedArr, postArr []item) ([]keypressGap, []item, error) {
 	mergedKeypresses := filterKeypresses(mergedArr)
 	postKeypresses := filterKeypresses(postArr)
 
 	postDict, err := buildPostMap(postKeypresses)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	var prefixKeypress *item = nil
@@ -46,7 +46,7 @@ func compareArr(mergedArr, postArr []item) ([]keypressGap, error) {
 		prefixKeypress = &keypress
 		i++
 	}
-	return keypressGaps, nil
+	return keypressGaps, mergedKeypresses, nil
 }
 func buildPostMap(postKeypresses []item) (map[float64]item, error) {
 	var dict map[float64]item = make(map[float64]item)
@@ -54,7 +54,7 @@ func buildPostMap(postKeypresses []item) (map[float64]item, error) {
 		dict[keypress.TBegin] = keypress
 	}
 	if len(dict) != len(postKeypresses) {
-		err := fmt.Errorf("whoopsie doopsie, dict is incomplete")
+		err := fmt.Errorf("buildPostMap failed - could not build dict")
 		return dict, err
 	}
 	return dict, nil

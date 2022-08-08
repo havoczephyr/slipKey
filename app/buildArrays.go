@@ -47,7 +47,7 @@ func readItems(path string) ([]item, error) {
 				fmt.Printf("parse failure -%v", err)
 				os.Exit(1)
 			}
-			tEnd, err := strconv.ParseFloat(column[0], 64)
+			tEnd, err := strconv.ParseFloat(column[1], 64)
 			if err != nil {
 				fmt.Printf("parse failure -%v", err)
 				os.Exit(1)

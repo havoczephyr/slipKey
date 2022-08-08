@@ -9,14 +9,14 @@ func SessionIterate(arr []SessionInfo, boolean bool) error {
 		if err1 != nil {
 			fmt.Printf("buildArrays failed on %s - %v", session.SessionName, err1)
 		}
-		gaps, err2 := compareArr(mergedArr, curatedPostArr)
+		gaps, mergedKeypresses, err2 := compareArr(mergedArr, curatedPostArr)
 		if err2 != nil {
 			fmt.Printf("compareArr failed on %s - %v", session.SessionName, err2)
 		}
 		generateSessionReport(gaps)
-		// if boolean {
-		// 	generatePostProcessFixed(mergedArr, curatedPostArr)
-		// }
+		if boolean {
+			generatePostProcessFixed(mergedKeypresses, curatedPostArr, session.SessionPath)
+		}
 	}
 	return nil
 }

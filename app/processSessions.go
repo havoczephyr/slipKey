@@ -21,7 +21,12 @@ func ProcessSessions(dir string) []SessionInfo {
 			if err != nil {
 				fmt.Printf("vital check failed -%v", err)
 			} else {
-				session := SessionInfo{folder.Name(), mergedPath, curatedPostPath}
+				session := SessionInfo{
+					SessionName:              folder.Name(),
+					SessionPath:              sessionPath,
+					MergedTsvPath:            mergedPath,
+					CuratedPostProcessedPath: curatedPostPath,
+				}
 				sessionInfos = append(sessionInfos, session)
 			}
 		}
