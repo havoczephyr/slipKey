@@ -2,7 +2,7 @@ package app
 
 import "fmt"
 
-func SessionIterate(arr []SessionInfo, boolean bool) error {
+func SessionIterate(arr []SessionInfo, boolean bool, folderStr string) error {
 	for _, session := range arr {
 		mergedArr, curatedPostArr, err1 := buildArrays(session.MergedTsvPath,
 			session.CuratedPostProcessedPath)
@@ -13,7 +13,7 @@ func SessionIterate(arr []SessionInfo, boolean bool) error {
 		if err2 != nil {
 			fmt.Printf("compareArr failed on %s - %v", session.SessionName, err2)
 		}
-		generateSessionReport(gaps)
+		generateSessionReport(gaps, session.SessionName, session.SessionPath, boolean, folderStr)
 		if boolean {
 			generatePostProcessFixed(mergedKeypresses, curatedPostArr, session.SessionPath)
 		}
