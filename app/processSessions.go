@@ -22,7 +22,7 @@ func ProcessSessions(dir string) []SessionInfo {
 			sessionPath := filepath.Join(dir, folder.Name())
 			mergedPath, curatedPostPath, err := vitalCheck(sessionPath)
 			if err != nil {
-				fmt.Printf("vital check failed -%v", err)
+				fmt.Printf("vital check failed -%v\n", err)
 			} else {
 				session := SessionInfo{
 					SessionName:              folder.Name(),
@@ -65,11 +65,11 @@ func vitalCheck(dir string) (string, string, error) {
 	}
 	var empty_err error
 	if merged == "" && cur_post == "" {
-		empty_err = fmt.Errorf("could not find files: %s and %s", MERGED_NAME, CUR_POST_NAME)
+		empty_err = fmt.Errorf("could not find files in %s: %s and %s", dir, MERGED_NAME, CUR_POST_NAME)
 	} else if merged == "" {
-		empty_err = fmt.Errorf("could not find file: %s", MERGED_NAME)
+		empty_err = fmt.Errorf("could not find file in %s: %s", dir, MERGED_NAME)
 	} else {
-		empty_err = fmt.Errorf("could not find file: %s", CUR_POST_NAME)
+		empty_err = fmt.Errorf("could not find file in %s: %s", dir, CUR_POST_NAME)
 	}
 
 	return merged, cur_post, empty_err
