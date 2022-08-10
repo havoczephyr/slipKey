@@ -57,7 +57,7 @@ func generateSessionReport(gapArr []keypressGap, sessName, sessPath string, bool
 		fmt.Sprintf("- Average Gap Duration: %.3f\n", averageGapDurationDelta),
 	)
 
-	report, err := os.Create(fmt.Sprintf("%s/SlipKey-Report.md", folderStr))
+	report, err := os.Create(fmt.Sprintf("%s/SlipKey-Report-%s.md", folderStr, sessName))
 	if err != nil {
 		fmt.Printf("failed to create Report -%v", err)
 	}
@@ -65,5 +65,11 @@ func generateSessionReport(gapArr []keypressGap, sessName, sessPath string, bool
 
 	for _, str := range slipKeyHeader {
 		report.WriteString(str)
+	}
+	for index, gap := range gapArr {
+		report.WriteString(fmt.Sprintf("\n---\n**Gap Set #%d**\n", index+1))
+		for _, item := range gap.MissingKeypresses {
+			report.WriteString(fmt.Sprintf("- %.3f\t%.3f\t%s\n", item.TBegin, item.TEnd, item.Content))
+		}
 	}
 }

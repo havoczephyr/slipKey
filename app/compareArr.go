@@ -2,6 +2,9 @@ package app
 
 import "fmt"
 
+//compareArr() will take the keypress values of merged and postprocessed tsv, and analyze the two arrays.
+//All results are returned as a []keypressGap. mergedKeypresses is also returned for use in generatePostProcessedFixed().
+// An error is also returned, if any.
 func compareArr(mergedArr, postArr []item) ([]keypressGap, []item, error) {
 	mergedKeypresses := filterKeypresses(mergedArr)
 	postKeypresses := filterKeypresses(postArr)
@@ -48,6 +51,9 @@ func compareArr(mergedArr, postArr []item) ([]keypressGap, []item, error) {
 	}
 	return keypressGaps, mergedKeypresses, nil
 }
+
+//buildPostMap() generates a dictionary of they keypresses in curated-postprocessed.tsv to better facilitate lookup.
+// returns a dictionary and an error, if any.
 func buildPostMap(postKeypresses []item) (map[float64]item, error) {
 	var dict map[float64]item = make(map[float64]item)
 	for _, keypress := range postKeypresses {
@@ -60,6 +66,7 @@ func buildPostMap(postKeypresses []item) (map[float64]item, error) {
 	return dict, nil
 }
 
+//filterKeypresses() generates an []item of every value in the input that has the i.Tier of "Keypress" and returns it.
 func filterKeypresses(input []item) []item {
 	outputArray := make([]item, 0)
 	for _, i := range input {

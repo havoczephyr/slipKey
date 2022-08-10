@@ -7,6 +7,7 @@ import (
 	"strconv"
 )
 
+//buildArrays will use the directory paths of merged.tsv and curated-postprocessed.tsv and returns []item's of both and an error, if any.
 func buildArrays(mergedPath string, postPath string) ([]item, []item, error) {
 	MergedItems, err := readItems(mergedPath)
 	if err != nil {
@@ -19,6 +20,7 @@ func buildArrays(mergedPath string, postPath string) ([]item, []item, error) {
 	return MergedItems, curatedPostProcessedItems, nil
 }
 
+//readItems() will read and parse an entire .tsv file and return an []item, with an error, if any.
 func readItems(path string) ([]item, error) {
 	file, err := os.Open(path)
 	if err != nil {

@@ -5,6 +5,8 @@ import (
 	"os"
 )
 
+//generatePostProcessFixed will take the "Keypress" values from merged.tsv and properly replace the values from curated-postprocessed.tsv.
+// and export them into a new tsv file, postprocessed-fixed.tsv.
 func generatePostProcessFixed(mergedKeypressArr, postArr []item, dir string) {
 	var fixedArr []item
 

@@ -4,6 +4,8 @@ import (
 	"os"
 )
 
+//Initializes working directory and collects flags.
+// Returns a flag condition, working directory and errors, if any.
 func Boot() (bool, string, error) {
 	fixBool := false
 
