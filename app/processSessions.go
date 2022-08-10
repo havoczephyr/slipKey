@@ -41,7 +41,7 @@ func ProcessSessions(dir string) []SessionInfo {
 // Will return the directory address to both and an error, if any.
 func vitalCheck(dir string) (string, string, error) {
 	const MERGED_NAME string = "merged.tsv"
-	const CUR_POST_NAME string = "curated-processed.tsv"
+	const CUR_POST_NAME string = "curated_processed.tsv"
 
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
