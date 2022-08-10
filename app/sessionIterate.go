@@ -7,14 +7,16 @@ import "fmt"
 // resolve the issue in generatePostProcessFixed. returns an error, if any.
 func SessionIterate(arr []SessionInfo, boolean bool, folderStr string) error {
 	for _, session := range arr {
-		mergedArr, curatedPostArr, err1 := buildArrays(session.MergedTsvPath,
+		mergedArr, curatedPostArr, err := buildArrays(session.MergedTsvPath,
 			session.CuratedPostProcessedPath)
-		if err1 != nil {
-			fmt.Printf("buildArrays failed on %s - %v", session.SessionName, err1)
+		if err != nil {
+			fmt.Printf("buildArrays failed on %s - %v", session.SessionName, err)
+			continue
 		}
-		gaps, mergedKeypresses, err2 := compareArr(mergedArr, curatedPostArr)
-		if err2 != nil {
-			fmt.Printf("compareArr failed on %s - %v", session.SessionName, err2)
+		gaps, mergedKeypresses, err := compareArr(mergedArr, curatedPostArr)
+		if err != nil {
+			fmt.Printf("compareArr failed on %s - %v", session.SessionName, err)
+			continue
 		}
 		generateSessionReport(gaps, session.SessionName, session.SessionPath, boolean, folderStr)
 		if boolean {

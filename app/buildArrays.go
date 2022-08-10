@@ -37,7 +37,7 @@ func readItems(path string) ([]item, error) {
 
 	tsvData, err := reader.ReadAll()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	for _, column := range tsvData {
@@ -46,13 +46,11 @@ func readItems(path string) ([]item, error) {
 		} else {
 			tBegin, err := strconv.ParseFloat(column[0], 64)
 			if err != nil {
-				fmt.Printf("parse failure -%v", err)
-				os.Exit(1)
+				return nil, err
 			}
 			tEnd, err := strconv.ParseFloat(column[1], 64)
 			if err != nil {
-				fmt.Printf("parse failure -%v", err)
-				os.Exit(1)
+				return nil, err
 			}
 			tier := column[2]
 			content := column[3]
