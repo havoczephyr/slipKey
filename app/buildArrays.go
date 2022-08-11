@@ -1,10 +1,11 @@
 package app
 
 import (
-	"encoding/csv"
+	"bufio"
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 //buildArrays will use the directory paths of merged.tsv and curated-postprocessed.tsv and returns []item's of both and an error, if any.
@@ -29,35 +30,35 @@ func readItems(path string) ([]item, error) {
 	}
 	defer file.Close()
 
-	reader := csv.NewReader(file)
-	reader.Comma = '\t'
-	reader.FieldsPerRecord = -1
+	// reader := csv.NewReader(file)
+	// reader.Comma = '\t'
+	// reader.FieldsPerRecord = -1
+
+	// tsvData, err := reader.ReadAll()
+	// if err != nil {
+	// 	return nil, err
+	// }
+	//csv.NewReader had issues with "" because it was presuming normal tsv conventions.
 
 	itemsArray := make([]item, 0)
-
-	tsvData, err := reader.ReadAll()
-	if err != nil {
-		return nil, err
-	}
-
-	for _, column := range tsvData {
-		if column[0] == "tBegin" {
-			continue
-		} else {
-			tBegin, err := strconv.ParseFloat(column[0], 64)
-			if err != nil {
-				return nil, err
-			}
-			tEnd, err := strconv.ParseFloat(column[1], 64)
-			if err != nil {
-				return nil, err
-			}
-			tier := column[2]
-			content := column[3]
-			lineItem := item{tBegin, tEnd, tier, content}
-			itemsArray = append(itemsArray, lineItem)
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+	scanner.Scan() //<-- skips the first line tBegin, tEnd etc.
+	for scanner.Scan() {
+		line := scanner.Text()
+		values := strings.Split(line, "\t")
+		tBegin, err := strconv.ParseFloat(values[0], 64)
+		if err != nil {
+			return nil, err
 		}
-
+		tEnd, err := strconv.ParseFloat(values[1], 64)
+		if err != nil {
+			return nil, err
+		}
+		tier := values[2]
+		content := values[3]
+		lineItem := item{tBegin, tEnd, tier, content}
+		itemsArray = append(itemsArray, lineItem)
 	}
 
 	return itemsArray, nil
