@@ -1,0 +1,21 @@
+@font-face {
+    font-family: playfair;
+    src: url(playfair.ttf);
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:50%;
+}
+*{
+    font-family: playfair;
+}
+h1 {
+    font-size: 48px;
+}
+
+body {
+    background-color: bisque;
+}
