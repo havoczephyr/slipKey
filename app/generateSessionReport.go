@@ -26,12 +26,21 @@ func generateSessionReport(gapArr []keypressGap, sessName, sessPath string, bool
 	var averageGapDurationDelta float32
 	var smallestInterruptThreshold float32 = 999.999
 
+	var interrupt interruptData
+	interrupt.folderPath = folderStr
+	interrupt.sessionName = sessName
+
 	for _, gap := range gapArr {
 		missingKeyTotal += len(gap.MissingKeypresses)
+
 		interruptTotal += float32(gap.TriggerTime)
+		interrupt.triggerTimes = append(interrupt.triggerTimes, gap.TriggerTime)
+
 		durationTotal += float32(gap.Duration)
+
 		if smallestInterruptThreshold > float32(gap.TriggerTime) {
 			smallestInterruptThreshold = float32(gap.TriggerTime)
+			interrupt.smallestInterrupt = smallestInterruptThreshold
 		}
 
 	}
@@ -72,4 +81,9 @@ func generateSessionReport(gapArr []keypressGap, sessName, sessPath string, bool
 			report.WriteString(fmt.Sprintf("- %.3f\t%.3f\t%s\n", item.TBegin, item.TEnd, item.Content))
 		}
 	}
+	freqPath, err := generateReportHist(interrupt)
+	if err != nil {
+		fmt.Printf("failed to generate frequency graph -%v", err)
+	}
+	report.WriteString(fmt.Sprintf("\n<img src=%s>", freqPath))
 }
