@@ -6,7 +6,6 @@ import (
 
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"
-	"gonum.org/v1/plot/vg"
 	"gonum.org/v1/plot/vg/draw"
 )
 
@@ -38,7 +37,7 @@ func generateReportHist(data interruptData) (string, error) {
 	s.Color = color.RGBA{B: 255, A: 255}
 	p.Add(s)
 
-	if err := p.Save(4*vg.Inch, 4*vg.Inch, fmt.Sprintf("%s/frequency-%s.png", data.folderPath, data.sessionName)); err != nil {
+	if err := p.Save(256, 256, fmt.Sprintf("%s/frequency-%s.png", data.folderPath, data.sessionName)); err != nil {
 		return "", err
 	}
 	return fmt.Sprintf("frequency-%s.png", data.sessionName), nil
