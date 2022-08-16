@@ -4,33 +4,39 @@ import (
 	"fmt"
 	"image/color"
 
-	"github.com/gonum/stat/distuv"
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/vg"
+	"gonum.org/v1/plot/vg/draw"
 )
 
 func generateReportHist(data interruptData) (string, error) {
 	p := plot.New()
 	p.Title.Text = "Interrupt Frequency"
-	v := make(plotter.Values, len(data.triggerTimes))
 
-	for i := range v {
-		v[i] = data.triggerTimes[i]
+	pxys := make(plotter.XYs, len(data.triggerTimes))
+
+	for i, triggerTime := range data.triggerTimes {
+		pxys[i].X = float64(i)
+		pxys[i].Y = triggerTime
 	}
-
-	h, err := plotter.NewHist(v, len(v)+1)
+	s, err := plotter.NewScatter(pxys)
 	if err != nil {
 		return "", err
 	}
+	s.GlyphStyle.Shape = draw.CrossGlyph{}
+	s.Color = color.RGBA{R: 255, A: 255}
+	p.Add(s)
 
-	h.Normalize(1)
-	p.Add(h)
-
-	norm := plotter.NewFunction(distuv.UnitNormal.Prob)
-	norm.Color = color.RGBA{R: 255, A: 255}
-	norm.Width = vg.Points(float64(len(v) + 1))
-	p.Add(norm)
+	s, err = plotter.NewScatter(plotter.XYs{
+		{X: 1, Y: float64(data.smallestInterrupt)},
+	})
+	if err != nil {
+		return "", err
+	}
+	s.GlyphStyle.Shape = draw.PyramidGlyph{}
+	s.Color = color.RGBA{B: 255, A: 255}
+	p.Add(s)
 
 	if err := p.Save(4*vg.Inch, 4*vg.Inch, fmt.Sprintf("%s/frequency-%s.png", data.folderPath, data.sessionName)); err != nil {
 		return "", err
