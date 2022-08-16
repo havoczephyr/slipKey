@@ -22,6 +22,7 @@ func compareArr(mergedArr, postArr []item) ([]keypressGap, []item, error) {
 
 		_, found := postDict[keypress.TBegin]
 		if !found {
+			isFirst := i == 0
 			missingKeypresses := make([]item, 0)
 			for !found {
 				missingKeypresses = append(missingKeypresses, keypress)
@@ -31,7 +32,7 @@ func compareArr(mergedArr, postArr []item) ([]keypressGap, []item, error) {
 			}
 			suffixKeypress := &keypress
 			var triggerTime float64
-			if i == 0 {
+			if isFirst {
 				triggerTime = missingKeypresses[0].TBegin
 			} else {
 				triggerTime = missingKeypresses[0].TBegin - prefixKeypress.TBegin

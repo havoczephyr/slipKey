@@ -12,6 +12,8 @@ import (
 func generateReportHist(data interruptData) (string, error) {
 	p := plot.New()
 	p.Title.Text = "Interrupt Frequency"
+	p.Y.Max = +1
+	p.X.Max = +6
 
 	pxys := make(plotter.XYs, len(data.triggerTimes))
 
