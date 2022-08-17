@@ -2,7 +2,6 @@ tBegin	tEnd	Tier	Content
 0	2.0	AudioEvents1	Speech
 2.8	15.0	AudioEvents1	Speech
 21.5	25.5	AudioEvents1	Speech
-14.451	14.519	Keypress	N
 14.573	14.690	Keypress	O
 14.740	14.820	Keypress	Oemcomma
 14.840	14.939	Keypress	Space
