@@ -6,6 +6,8 @@ Compare the Keypress rows in the merged.tsv and curated_postprocessed.tsv files.
 2. Write a Python script to copy over the missing keypresses from merged.tsv into the corresponding curated_postprocessed.tsv, preserving the chronological ordering of the event rows.
 
 3. Write a Python script or a new button in data manager to re-upload the fixed curated_postprocessed.tsv files to GCS.
+
+4. changing stuff to force a push
 ```
 
 ## Report and Fix
